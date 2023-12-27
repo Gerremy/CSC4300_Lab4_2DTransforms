@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>2D Transformations</title>
+
+<script>
+    var canvas;         // DOM object corresponding to the canvas
+    var graphics;       // 2D graphics context for drawing on the canvas
+    var angle = 0.1;    // rotate the square by 0.1 radians each time
+
+    // do NOT make any changes this function
+    // fill a square of side 2 centered at (0,0) - subject to transformations
+    function fillSquare(color) {
+        graphics.fillStyle = color;
+        graphics.fillRect(-1, -1, 2, 2);
+    } 
+
+    // draw a circle centered mid-canvas of given radius 
+    function drawCircle(radius)
+    {
+        graphics.beginPath();
+        graphics.arc(canvas.width/2,canvas.height/2,radius,0,2*Math.PI);
+        graphics.strokeStyle = "black";
+        graphics.stroke();
+    }
+
+    function rotateDiamond() {
+
+        graphics.clearRect(0, 0, canvas.width, canvas.height);
+
+        // draw a circle of radius 150 for the diamond to rotate in or around
+        drawCircle(150); 
+
+        // Draw a diamond centered mid-canvas
+        graphics.save();                // save canvas state
+        graphics.translate(canvas.width/2, canvas.height/2);   // 4th: translate
+        graphics.rotate(angle);         // 3rd: rotate diamond  
+        graphics.translate(0, -150);   
+        graphics.scale(20,40);          // 2nd: scale diamond twice as tall as wide
+        graphics.rotate(Math.PI/4);     // 1st: square-to-diamond, for proper scale     
+        fillSquare("red");
+        graphics.restore();             // restore canvas state
+
+        angle += 0.1;                   // update angle for the next call           
+
+    }
+
+    function draw() {
+
+        // 4) call scale twice with different values, then switch the order
+        //    does the order matter? Yes
+            //graphics.rotate(Math.PI/2);
+            //graphics.scale(40, 60);
+        //graphics.scale(60, 40);
+
+        // 5) comment one of the scale calls from part 1)
+        //    call rotate, then switch the scale and rotate order
+        //    does the order matter? Yes
+            //graphics.rotate(Math.PI/2);
+        
+        // 6) comment the code from parts 4) and 5)
+        //    call translate then scale, and then switch the order
+        //    does the order matter?
+            //graphics.translate(30,40);
+            //graphics.scale(10, 10);
+                //graphics.translate(30,30);
+                //graphics.scale(10, 10);
+
+        // 7) comment the code from part 6) 
+        //    call translate, then rotate, then scale
+        //    then switch the order of translate and rotate; what happens?
+            //graphics.translate(canvas.width/2, canvas.height/2);
+            //graphics.rotate(Math.PI/4);
+        //graphics.translate(canvas.width/2, canvas.height/2);
+            //graphics.scale(10, 10);
+            //originally the shape was a square, however after swtiching the order the shape was a diamond
+
+        // 8) comment the code from part 7) 
+        //    draw a diamond twice as tall as wide in the center of the canvas 
+        //    use transformations only, do not change the drawSquare call
+
+        graphics.translate(canvas.width/2, canvas.height/2);
+        graphics.scale(20, 40);
+        graphics.rotate(Math.PI/4);
+
+        // 9) animation part
+
+        // do NOT change the call below
+        fillSquare("red");
+    }
+
+    function main() {
+        canvas = document.getElementById("myCanvas");
+        graphics = canvas.getContext("2d");
+        //draw();  // draw something on the canvas
+        var timer = setInterval(rotateDiamond, 150);
+    }
+</script>
+
+
+</head>
+<body onload="main()">
+    <canvas id="myCanvas" width="420" height="420" style="border:1px solid lightgrey;"></canvas>
+</body>
+</html>
